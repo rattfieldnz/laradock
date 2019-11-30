@@ -15,8 +15,8 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   postgres:
     driver: ${VOLUMES_DRIVER}
-  memcached:
-    driver: ${VOLUMES_DRIVER}
+#  memcached:
+#    driver: ${VOLUMES_DRIVER}
   redis:
     driver: ${VOLUMES_DRIVER}
   neo4j:
@@ -27,26 +27,24 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   minio:
     driver: ${VOLUMES_DRIVER}
-  rethinkdb:
-    driver: ${VOLUMES_DRIVER}
   phpmyadmin:
     driver: ${VOLUMES_DRIVER}
-  adminer:
-    driver: ${VOLUMES_DRIVER}
+#  adminer:
+#    driver: ${VOLUMES_DRIVER}
   aerospike:
     driver: ${VOLUMES_DRIVER}
-  caddy:
-    driver: ${VOLUMES_DRIVER}
-  elasticsearch:
-    driver: ${VOLUMES_DRIVER}
+#  caddy:
+#    driver: ${VOLUMES_DRIVER}
+#  elasticsearch:
+#    driver: ${VOLUMES_DRIVER}
   mosquitto:
     driver: ${VOLUMES_DRIVER}
   confluence:
     driver: ${VOLUMES_DRIVER}
   sonarqube:
     driver: ${VOLUMES_DRIVER}
-  cassandra:
-    driver: ${VOLUMES_DRIVER}
+#  cassandra:
+#    driver: ${VOLUMES_DRIVER}
   graylog:
     driver: ${VOLUMES_DRIVER}
   dind:
@@ -227,84 +225,84 @@ services:
         - docker-in-docker
 
 ### PHP Worker ############################################
-    php-worker:
-      build:
-        context: ./php-worker
-        args:
-          - PHP_VERSION=${PHP_VERSION}
-          - PHALCON_VERSION=${PHALCON_VERSION}
-          - INSTALL_PGSQL=${PHP_WORKER_INSTALL_PGSQL}
-          - INSTALL_BCMATH=${PHP_WORKER_INSTALL_BCMATH}
-          - INSTALL_PHALCON=${PHP_WORKER_INSTALL_PHALCON}
-          - INSTALL_SOAP=${PHP_WORKER_INSTALL_SOAP}
-          - INSTALL_ZIP_ARCHIVE=${PHP_WORKER_INSTALL_ZIP_ARCHIVE}
-          - INSTALL_MYSQL_CLIENT=${PHP_WORKER_INSTALL_MYSQL_CLIENT}
-          - INSTALL_AMQP=${PHP_WORKER_INSTALL_AMQP}
-          - INSTALL_CASSANDRA=${PHP_WORKER_INSTALL_CASSANDRA}
-          - INSTALL_GEARMAN=${PHP_WORKER_INSTALL_GEARMAN}
-          - INSTALL_GHOSTSCRIPT=${PHP_WORKER_INSTALL_GHOSTSCRIPT}
-          - INSTALL_SWOOLE=${PHP_WORKER_INSTALL_SWOOLE}
-          - INSTALL_TAINT=${PHP_WORKER_INSTALL_TAINT}
-          - INSTALL_FFMPEG=${PHP_WORKER_INSTALL_FFMPEG}
-          - INSTALL_GMP=${PHP_WORKER_INSTALL_GMP}
-          - INSTALL_REDIS=${PHP_WORKER_INSTALL_REDIS}
-          - PUID=${PHP_WORKER_PUID}
-          - PGID=${PHP_WORKER_PGID}
-      volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
-        - ./php-worker/supervisord.d:/etc/supervisord.d
-      depends_on:
-        - workspace
-      extra_hosts:
-        - "dockerhost:${DOCKER_HOST_IP}"
-      networks:
-        - backend
+#    php-worker:
+#      build:
+#        context: ./php-worker
+#        args:
+#          - PHP_VERSION=${PHP_VERSION}
+#          - PHALCON_VERSION=${PHALCON_VERSION}
+#          - INSTALL_PGSQL=${PHP_WORKER_INSTALL_PGSQL}
+#          - INSTALL_BCMATH=${PHP_WORKER_INSTALL_BCMATH}
+#          - INSTALL_PHALCON=${PHP_WORKER_INSTALL_PHALCON}
+#          - INSTALL_SOAP=${PHP_WORKER_INSTALL_SOAP}
+#          - INSTALL_ZIP_ARCHIVE=${PHP_WORKER_INSTALL_ZIP_ARCHIVE}
+#          - INSTALL_MYSQL_CLIENT=${PHP_WORKER_INSTALL_MYSQL_CLIENT}
+#          - INSTALL_AMQP=${PHP_WORKER_INSTALL_AMQP}
+#          - INSTALL_CASSANDRA=${PHP_WORKER_INSTALL_CASSANDRA}
+#          - INSTALL_GEARMAN=${PHP_WORKER_INSTALL_GEARMAN}
+#          - INSTALL_GHOSTSCRIPT=${PHP_WORKER_INSTALL_GHOSTSCRIPT}
+#          - INSTALL_SWOOLE=${PHP_WORKER_INSTALL_SWOOLE}
+#          - INSTALL_TAINT=${PHP_WORKER_INSTALL_TAINT}
+#          - INSTALL_FFMPEG=${PHP_WORKER_INSTALL_FFMPEG}
+#          - INSTALL_GMP=${PHP_WORKER_INSTALL_GMP}
+#          - INSTALL_REDIS=${PHP_WORKER_INSTALL_REDIS}
+#          - PUID=${PHP_WORKER_PUID}
+#          - PGID=${PHP_WORKER_PGID}
+#      volumes:
+#        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+#        - ./php-worker/supervisord.d:/etc/supervisord.d
+#      depends_on:
+#        - workspace
+#      extra_hosts:
+#        - "dockerhost:${DOCKER_HOST_IP}"
+#      networks:
+#        - backend
 ### Laravel Horizon ############################################
-    laravel-horizon:
-      build:
-        context: ./laravel-horizon
-        args:
-          - PHP_VERSION=${PHP_VERSION}
-          - INSTALL_PGSQL=${PHP_FPM_INSTALL_PGSQL}
-          - INSTALL_BCMATH=${PHP_FPM_INSTALL_BCMATH}
-          - INSTALL_MEMCACHED=${PHP_FPM_INSTALL_MEMCACHED}
-          - INSTALL_SOCKETS=${LARAVEL_HORIZON_INSTALL_SOCKETS}
-          - INSTALL_CASSANDRA=${PHP_FPM_INSTALL_CASSANDRA}
-          - INSTALL_PHPREDIS=${LARAVEL_HORIZON_INSTALL_PHPREDIS}
-      volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-        - ./laravel-horizon/supervisord.d:/etc/supervisord.d
-      depends_on:
-        - workspace
-      extra_hosts:
-        - "dockerhost:${DOCKER_HOST_IP}"
-      networks:
-        - backend
+#    laravel-horizon:
+#      build:
+#        context: ./laravel-horizon
+#        args:
+#          - PHP_VERSION=${PHP_VERSION}
+#          - INSTALL_PGSQL=${PHP_FPM_INSTALL_PGSQL}
+#          - INSTALL_BCMATH=${PHP_FPM_INSTALL_BCMATH}
+#          - INSTALL_MEMCACHED=${PHP_FPM_INSTALL_MEMCACHED}
+#          - INSTALL_SOCKETS=${LARAVEL_HORIZON_INSTALL_SOCKETS}
+#          - INSTALL_CASSANDRA=${PHP_FPM_INSTALL_CASSANDRA}
+#          - INSTALL_PHPREDIS=${LARAVEL_HORIZON_INSTALL_PHPREDIS}
+#      volumes:
+#        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+#        - ./laravel-horizon/supervisord.d:/etc/supervisord.d
+#      depends_on:
+#        - workspace
+#      extra_hosts:
+#        - "dockerhost:${DOCKER_HOST_IP}"
+#      networks:
+#        - backend
 
 ### NGINX Server #########################################
-    nginx:
-      build:
-        context: ./nginx
-        args:
-          - PHP_UPSTREAM_CONTAINER=${NGINX_PHP_UPSTREAM_CONTAINER}
-          - PHP_UPSTREAM_PORT=${NGINX_PHP_UPSTREAM_PORT}
-          - CHANGE_SOURCE=${CHANGE_SOURCE}
-          - http_proxy
-          - https_proxy
-          - no_proxy
-      volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
-        - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
-        - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
-        - ${NGINX_SSL_PATH}:/etc/nginx/ssl
-      ports:
-        - "${NGINX_HOST_HTTP_PORT}:80"
-        - "${NGINX_HOST_HTTPS_PORT}:443"
-      depends_on:
-        - php-fpm
-      networks:
-        - frontend
-        - backend
+#    nginx:
+#      build:
+#        context: ./nginx
+#        args:
+#          - PHP_UPSTREAM_CONTAINER=${NGINX_PHP_UPSTREAM_CONTAINER}
+#          - PHP_UPSTREAM_PORT=${NGINX_PHP_UPSTREAM_PORT}
+#          - CHANGE_SOURCE=${CHANGE_SOURCE}
+#          - http_proxy
+#          - https_proxy
+#          - no_proxy
+#      volumes:
+#        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+#        - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+#        - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
+#        - ${NGINX_SSL_PATH}:/etc/nginx/ssl
+#      ports:
+#        - "${NGINX_HOST_HTTP_PORT}:80"
+#        - "${NGINX_HOST_HTTPS_PORT}:443"
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - frontend
+#        - backend
 
 ### Blackfire ########################################
     blackfire:
@@ -340,17 +338,17 @@ services:
         - backend
 
 ### HHVM #################################################
-    hhvm:
-      build: ./hhvm
-      volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
-      expose:
-        - "9000"
-      depends_on:
-        - workspace
-      networks:
-        - frontend
-        - backend
+#    hhvm:
+#      build: ./hhvm
+#      volumes:
+#        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+#      expose:
+#        - "9000"
+#      depends_on:
+#        - workspace
+#      networks:
+#        - frontend
+#        - backend
 
 ### Minio ################################################
     minio:
@@ -511,16 +509,6 @@ services:
       networks:
         - backend
 
-### RethinkDB ##############################################
-    rethinkdb:
-      build: ./rethinkdb
-      ports:
-        - "${RETHINKDB_PORT}:8080"
-      volumes:
-        - ${DATA_PATH_HOST}/rethinkdb:/data/rethinkdb_data
-      networks:
-        - backend
-
 ### Redis ################################################
     redis:
       build: ./redis
@@ -569,138 +557,138 @@ services:
         - backend
 
 ### Memcached ############################################
-    memcached:
-      build: ./memcached
-      volumes:
-        - ${DATA_PATH_HOST}/memcached:/var/lib/memcached
-      ports:
-        - "${MEMCACHED_HOST_PORT}:11211"
-      depends_on:
-        - php-fpm
-      networks:
-        - backend
+#    memcached:
+#      build: ./memcached
+#      volumes:
+#        - ${DATA_PATH_HOST}/memcached:/var/lib/memcached
+#      ports:
+#        - "${MEMCACHED_HOST_PORT}:11211"
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - backend
 
 ### Beanstalkd ###########################################
-    beanstalkd:
-      build: ./beanstalkd
-      ports:
-        - "${BEANSTALKD_HOST_PORT}:11300"
-      privileged: true
-      depends_on:
-        - php-fpm
-      networks:
-        - backend
+#    beanstalkd:
+#      build: ./beanstalkd
+#      ports:
+#        - "${BEANSTALKD_HOST_PORT}:11300"
+#      privileged: true
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - backend
 
 ### RabbitMQ #############################################
-    rabbitmq:
-      build: ./rabbitmq
-      ports:
-        - "${RABBITMQ_NODE_HOST_PORT}:5672"
-        - "${RABBITMQ_MANAGEMENT_HTTP_HOST_PORT}:15672"
-        - "${RABBITMQ_MANAGEMENT_HTTPS_HOST_PORT}:15671"
-      privileged: true
-      environment:
-        - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-        - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-      hostname: laradock-rabbitmq
-      volumes:
-        - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq
-      depends_on:
-        - php-fpm
-      networks:
-        - backend
+#    rabbitmq:
+#      build: ./rabbitmq
+#      ports:
+#        - "${RABBITMQ_NODE_HOST_PORT}:5672"
+#        - "${RABBITMQ_MANAGEMENT_HTTP_HOST_PORT}:15672"
+#        - "${RABBITMQ_MANAGEMENT_HTTPS_HOST_PORT}:15671"
+#      privileged: true
+#      environment:
+#        - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+#        - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+#      hostname: laradock-rabbitmq
+#      volumes:
+#        - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - backend
 
 ### Cassandra ############################################
-    cassandra:
-      build: ./cassandra
-      ports:
-        - "${CASSANDRA_TRANSPORT_PORT_NUMBER}:7000"
-        - "${CASSANDRA_JMX_PORT_NUMBER}:7199"
-        - "${CASSANDRA_CQL_PORT_NUMBER}:9042"
-      privileged: true
-      environment:
-        - CASSANDRA_VERSION=${CASSANDRA_VERSION}
-        - CASSANDRA_TRANSPORT_PORT_NUMBER=${CASSANDRA_TRANSPORT_PORT_NUMBER}
-        - CASSANDRA_JMX_PORT_NUMBER=${CASSANDRA_JMX_PORT_NUMBER}
-        - CASSANDRA_CQL_PORT_NUMBER=${CASSANDRA_CQL_PORT_NUMBER}
-        - CASSANDRA_USER=${CASSANDRA_USER}
-        - CASSANDRA_PASSWORD_SEEDER=${CASSANDRA_PASSWORD_SEEDER}
-        - CASSANDRA_PASSWORD=${CASSANDRA_PASSWORD}
-        - CASSANDRA_NUM_TOKENS=${CASSANDRA_NUM_TOKENS}
-        - CASSANDRA_HOST=${CASSANDRA_HOST}
-        - CASSANDRA_CLUSTER_NAME=${CASSANDRA_CLUSTER_NAME}
-        - CASSANDRA_SEEDS=${CASSANDRA_SEEDS}
-        - CASSANDRA_ENDPOINT_SNITCH=${CASSANDRA_ENDPOINT_SNITCH}
-        - CASSANDRA_ENABLE_RPC=${CASSANDRA_ENABLE_RPC}
-        - CASSANDRA_DATACENTER=${CASSANDRA_DATACENTER}
-        - CASSANDRA_RACK=${CASSANDRA_RACK}
-      hostname: laradock-cassandra
-      volumes:
-        - ${DATA_PATH_HOST}/cassandra:/var/lib/cassandra
-      depends_on:
-        - php-fpm
-      networks:
-        - backend
+#    cassandra:
+#      build: ./cassandra
+#      ports:
+#        - "${CASSANDRA_TRANSPORT_PORT_NUMBER}:7000"
+#        - "${CASSANDRA_JMX_PORT_NUMBER}:7199"
+#        - "${CASSANDRA_CQL_PORT_NUMBER}:9042"
+#      privileged: true
+#      environment:
+#        - CASSANDRA_VERSION=${CASSANDRA_VERSION}
+#        - CASSANDRA_TRANSPORT_PORT_NUMBER=${CASSANDRA_TRANSPORT_PORT_NUMBER}
+#        - CASSANDRA_JMX_PORT_NUMBER=${CASSANDRA_JMX_PORT_NUMBER}
+#        - CASSANDRA_CQL_PORT_NUMBER=${CASSANDRA_CQL_PORT_NUMBER}
+#        - CASSANDRA_USER=${CASSANDRA_USER}
+#        - CASSANDRA_PASSWORD_SEEDER=${CASSANDRA_PASSWORD_SEEDER}
+#        - CASSANDRA_PASSWORD=${CASSANDRA_PASSWORD}
+#        - CASSANDRA_NUM_TOKENS=${CASSANDRA_NUM_TOKENS}
+#        - CASSANDRA_HOST=${CASSANDRA_HOST}
+#        - CASSANDRA_CLUSTER_NAME=${CASSANDRA_CLUSTER_NAME}
+#        - CASSANDRA_SEEDS=${CASSANDRA_SEEDS}
+#        - CASSANDRA_ENDPOINT_SNITCH=${CASSANDRA_ENDPOINT_SNITCH}
+#        - CASSANDRA_ENABLE_RPC=${CASSANDRA_ENABLE_RPC}
+#        - CASSANDRA_DATACENTER=${CASSANDRA_DATACENTER}
+#        - CASSANDRA_RACK=${CASSANDRA_RACK}
+#      hostname: laradock-cassandra
+#      volumes:
+#        - ${DATA_PATH_HOST}/cassandra:/var/lib/cassandra
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - backend
 
 ### Gearman ############################################
-    gearman:
-      build: ./gearman
-      ports:
-        - "${GEARMAN_PORT}:4730"
-      privileged: true
-      environment:
-        - GEARMAN_VERSION=${GEARMAN_VERSION}
-        - GEARMAN_VERBOSE=${GEARMAN_VERBOSE}
-        - GEARMAN_QUEUE_TYPE=${GEARMAN_QUEUE_TYPE}
-        - GEARMAN_THREADS=${GEARMAN_THREADS}
-        - GEARMAN_BACKLOG=${GEARMAN_BACKLOG}
-        - GEARMAN_FILE_DESCRIPTORS=${GEARMAN_FILE_DESCRIPTORS}
-        - GEARMAN_JOB_RETRIES=${GEARMAN_JOB_RETRIES}
-        - GEARMAN_ROUND_ROBIN=${GEARMAN_ROUND_ROBIN}
-        - GEARMAN_WORKER_WAKEUP=${GEARMAN_WORKER_WAKEUP}
-        - GEARMAN_KEEPALIVE=${GEARMAN_KEEPALIVE}
-        - GEARMAN_KEEPALIVE_IDLE=${GEARMAN_KEEPALIVE_IDLE}
-        - GEARMAN_KEEPALIVE_INTERVAL=${GEARMAN_KEEPALIVE_INTERVAL}
-        - GEARMAN_KEEPALIVE_COUNT=${GEARMAN_KEEPALIVE_COUNT}
-        - GEARMAN_MYSQL_HOST=${GEARMAN_MYSQL_HOST}
-        - GEARMAN_MYSQL_PORT=${GEARMAN_MYSQL_PORT}
-        - GEARMAN_MYSQL_USER=${GEARMAN_MYSQL_USER}
-        - GEARMAN_MYSQL_PASSWORD=${GEARMAN_MYSQL_PASSWORD}
-        - GEARMAN_MYSQL_PASSWORD_FILE=${GEARMAN_MYSQL_PASSWORD_FILE}
-        - GEARMAN_MYSQL_DB=${GEARMAN_MYSQL_DB}
-        - GEARMAN_MYSQL_TABLE=${GEARMAN_MYSQL_TABLE}
-      hostname: laradock-gearman
-      depends_on:
-        - php-fpm
-      networks:
-        - backend
+#    gearman:
+#      build: ./gearman
+#      ports:
+#        - "${GEARMAN_PORT}:4730"
+#      privileged: true
+#      environment:
+#        - GEARMAN_VERSION=${GEARMAN_VERSION}
+#        - GEARMAN_VERBOSE=${GEARMAN_VERBOSE}
+#        - GEARMAN_QUEUE_TYPE=${GEARMAN_QUEUE_TYPE}
+#        - GEARMAN_THREADS=${GEARMAN_THREADS}
+#        - GEARMAN_BACKLOG=${GEARMAN_BACKLOG}
+#        - GEARMAN_FILE_DESCRIPTORS=${GEARMAN_FILE_DESCRIPTORS}
+#        - GEARMAN_JOB_RETRIES=${GEARMAN_JOB_RETRIES}
+#        - GEARMAN_ROUND_ROBIN=${GEARMAN_ROUND_ROBIN}
+#        - GEARMAN_WORKER_WAKEUP=${GEARMAN_WORKER_WAKEUP}
+#        - GEARMAN_KEEPALIVE=${GEARMAN_KEEPALIVE}
+#        - GEARMAN_KEEPALIVE_IDLE=${GEARMAN_KEEPALIVE_IDLE}
+#        - GEARMAN_KEEPALIVE_INTERVAL=${GEARMAN_KEEPALIVE_INTERVAL}
+#        - GEARMAN_KEEPALIVE_COUNT=${GEARMAN_KEEPALIVE_COUNT}
+#        - GEARMAN_MYSQL_HOST=${GEARMAN_MYSQL_HOST}
+#        - GEARMAN_MYSQL_PORT=${GEARMAN_MYSQL_PORT}
+#        - GEARMAN_MYSQL_USER=${GEARMAN_MYSQL_USER}
+#        - GEARMAN_MYSQL_PASSWORD=${GEARMAN_MYSQL_PASSWORD}
+#        - GEARMAN_MYSQL_PASSWORD_FILE=${GEARMAN_MYSQL_PASSWORD_FILE}
+#        - GEARMAN_MYSQL_DB=${GEARMAN_MYSQL_DB}
+#        - GEARMAN_MYSQL_TABLE=${GEARMAN_MYSQL_TABLE}
+#      hostname: laradock-gearman
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - backend
 
 ### Beanstalkd Console ###################################
-    beanstalkd-console:
-      build: ./beanstalkd-console
-      ports:
-        - "${BEANSTALKD_CONSOLE_HOST_PORT}:2080"
-      depends_on:
-        - beanstalkd
-      networks:
-        - backend
+#    beanstalkd-console:
+#      build: ./beanstalkd-console
+#      ports:
+#        - "${BEANSTALKD_CONSOLE_HOST_PORT}:2080"
+#      depends_on:
+#        - beanstalkd
+#      networks:
+#        - backend
 
 ### Caddy Server #########################################
-    caddy:
-      build: ./caddy
-      volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
-        - ${CADDY_CONFIG_PATH}:/etc/caddy
-        - ${CADDY_HOST_LOG_PATH}:/var/log/caddy
-        - ${DATA_PATH_HOST}:/root/.caddy
-      ports:
-        - "${CADDY_HOST_HTTP_PORT}:80"
-        - "${CADDY_HOST_HTTPS_PORT}:443"
-      depends_on:
-        - php-fpm
-      networks:
-        - frontend
-        - backend
+#    caddy:
+#      build: ./caddy
+#      volumes:
+#        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+#        - ${CADDY_CONFIG_PATH}:/etc/caddy
+#        - ${CADDY_HOST_LOG_PATH}:/var/log/caddy
+#        - ${DATA_PATH_HOST}:/root/.caddy
+#      ports:
+#        - "${CADDY_HOST_HTTP_PORT}:80"
+#        - "${CADDY_HOST_HTTPS_PORT}:443"
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - frontend
+#        - backend
 
 ### phpMyAdmin ###########################################
     phpmyadmin:
@@ -719,18 +707,18 @@ services:
         - backend
 
 ### Adminer ###########################################
-    adminer:
-      build:
-        context: ./adminer
-        args:
-          - INSTALL_MSSQL=${ADM_INSTALL_MSSQL}
-      ports:
-        - "${ADM_PORT}:8080"
-      depends_on:
-        - php-fpm
-      networks:
-        - frontend
-        - backend
+#    adminer:
+#      build:
+#        context: ./adminer
+#        args:
+#          - INSTALL_MSSQL=${ADM_INSTALL_MSSQL}
+#      ports:
+#        - "${ADM_PORT}:8080"
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - frontend
+#        - backend
 
 ### pgAdmin ##############################################
     pgadmin:
@@ -749,57 +737,57 @@ services:
         - backend
 
 ### ElasticSearch ########################################
-    elasticsearch:
-      build: ./elasticsearch
-      volumes:
-        - elasticsearch:/usr/share/elasticsearch/data
-      environment:
-        - cluster.name=laradock-cluster
-        - node.name=laradock-node
-        - bootstrap.memory_lock=true
-        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-        - cluster.initial_master_nodes=laradock-node
-      ulimits:
-        memlock:
-          soft: -1
-          hard: -1
-      ports:
-        - "${ELASTICSEARCH_HOST_HTTP_PORT}:9200"
-        - "${ELASTICSEARCH_HOST_TRANSPORT_PORT}:9300"
-      depends_on:
-        - php-fpm
-      networks:
-        - frontend
-        - backend
+#    elasticsearch:
+#      build: ./elasticsearch
+#      volumes:
+#        - elasticsearch:/usr/share/elasticsearch/data
+#      environment:
+#        - cluster.name=laradock-cluster
+#        - node.name=laradock-node
+#        - bootstrap.memory_lock=true
+#        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#        - cluster.initial_master_nodes=laradock-node
+#      ulimits:
+#        memlock:
+#          soft: -1
+#          hard: -1
+#      ports:
+#        - "${ELASTICSEARCH_HOST_HTTP_PORT}:9200"
+#        - "${ELASTICSEARCH_HOST_TRANSPORT_PORT}:9300"
+#      depends_on:
+#        - php-fpm
+#      networks:
+#        - frontend
+#        - backend
 
 ### Logstash ##############################################
-    logstash:
-      build: ./logstash
-      volumes:
-        - './logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml'
-        - './logstash/pipeline:/usr/share/logstash/pipeline'
-      ports:
-        - '5001:5001'
-      environment:
-        LS_JAVA_OPTS: '-Xmx1g -Xms1g'
-      env_file:
-        - .env
-      networks:
-        - frontend
-        - backend
-      depends_on:
-        - elasticsearch
+#    logstash:
+#      build: ./logstash
+#      volumes:
+#        - './logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml'
+#        - './logstash/pipeline:/usr/share/logstash/pipeline'
+#      ports:
+#        - '5001:5001'
+#      environment:
+#        LS_JAVA_OPTS: '-Xmx1g -Xms1g'
+#      env_file:
+#        - .env
+#      networks:
+#        - frontend
+#        - backend
+#      depends_on:
+#        - elasticsearch
 
 ### Kibana ##############################################
-    kibana:
-      build: ./kibana
-      ports:
-        - "${KIBANA_HTTP_PORT}:5601"
-      depends_on:
-        - elasticsearch
-      networks:
-        - frontend
-        - backend
+#    kibana:
+#      build: ./kibana
+#      ports:
+#        - "${KIBANA_HTTP_PORT}:5601"
+#      depends_on:
+#        - elasticsearch
+#      networks:
+#        - frontend
+#        - backend
 
 ### Certbot #########################################
     certbot:
@@ -845,50 +833,50 @@ services:
         - frontend
 
 ### Varnish ##########################################
-    proxy:
-      build: ./varnish
-      expose:
-        - ${VARNISH_PORT}
-      environment:
-        - VARNISH_CONFIG=${VARNISH_CONFIG}
-        - CACHE_SIZE=${VARNISH_PROXY1_CACHE_SIZE}
-        - VARNISHD_PARAMS=${VARNISHD_PARAMS}
-        - VARNISH_PORT=${VARNISH_PORT}
-        - BACKEND_HOST=${VARNISH_PROXY1_BACKEND_HOST}
-        - BACKEND_PORT=${VARNISH_BACKEND_PORT}
-        - VARNISH_SERVER=${VARNISH_PROXY1_SERVER}
-      links:
-        - workspace
-      networks:
-        - frontend
+    # proxy:
+    #  build: ./varnish
+    #  expose:
+    #    - ${VARNISH_PORT}
+    #  environment:
+    #    - VARNISH_CONFIG=${VARNISH_CONFIG}
+    #    - CACHE_SIZE=${VARNISH_PROXY1_CACHE_SIZE}
+    #    - VARNISHD_PARAMS=${VARNISHD_PARAMS}
+    #    - VARNISH_PORT=${VARNISH_PORT}
+    #    - BACKEND_HOST=${VARNISH_PROXY1_BACKEND_HOST}
+    #    - BACKEND_PORT=${VARNISH_BACKEND_PORT}
+    #    - VARNISH_SERVER=${VARNISH_PROXY1_SERVER}
+    #  links:
+    #    - workspace
+    #  networks:
+    #    - frontend
 
-    proxy2:
-      build: ./varnish
-      expose:
-        - ${VARNISH_PORT}
-      environment:
-        - VARNISH_CONFIG=${VARNISH_CONFIG}
-        - CACHE_SIZE=${VARNISH_PROXY2_CACHE_SIZE}
-        - VARNISHD_PARAMS=${VARNISHD_PARAMS}
-        - VARNISH_PORT=${VARNISH_PORT}
-        - BACKEND_HOST=${VARNISH_PROXY2_BACKEND_HOST}
-        - BACKEND_PORT=${VARNISH_BACKEND_PORT}
-        - VARNISH_SERVER=${VARNISH_PROXY2_SERVER}
-      links:
-        - workspace
-      networks:
-        - frontend
+    # proxy2:
+    #  build: ./varnish
+    #  expose:
+    #    - ${VARNISH_PORT}
+    #  environment:
+    #    - VARNISH_CONFIG=${VARNISH_CONFIG}
+    #    - CACHE_SIZE=${VARNISH_PROXY2_CACHE_SIZE}
+    #    - VARNISHD_PARAMS=${VARNISHD_PARAMS}
+    #    - VARNISH_PORT=${VARNISH_PORT}
+    #    - BACKEND_HOST=${VARNISH_PROXY2_BACKEND_HOST}
+    #    - BACKEND_PORT=${VARNISH_BACKEND_PORT}
+    #    - VARNISH_SERVER=${VARNISH_PROXY2_SERVER}
+    #  links:
+    #    - workspace
+    #  networks:
+    #    - frontend
 
 ### HAProxy ####################################
-    haproxy:
-      build: ./haproxy
-      ports:
-        - "${HAPROXY_HOST_HTTP_PORT}:8085"
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-      links:
-        - proxy
-        - proxy2
+#    haproxy:
+#      build: ./haproxy
+#      ports:
+#        - "${HAPROXY_HOST_HTTP_PORT}:8085"
+#      volumes:
+#        - /var/run/docker.sock:/var/run/docker.sock
+#      links:
+#        - proxy
+#        - proxy2
 
 ### Jenkins ###################################################
     jenkins:
@@ -918,34 +906,34 @@ services:
         - backend
 
 ### Graylog #######################################
-    graylog:
-        build: ./graylog
-        environment:
-          - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD}
-          - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_SHA256_PASSWORD}
-          - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:${GRAYLOG_PORT}/
-        links:
-          - mongo
-          - elasticsearch
-        depends_on:
-          - mongo
-          - elasticsearch
-        ports:
-          # Graylog web interface and REST API
-          - ${GRAYLOG_PORT}:9000
-          # Syslog TCP
-          - ${GRAYLOG_SYSLOG_TCP_PORT}:514
-          # Syslog UDP
-          - ${GRAYLOG_SYSLOG_UDP_PORT}:514/udp
-          # GELF TCP
-          - ${GRAYLOG_GELF_TCP_PORT}:12201
-          # GELF UDP
-          - ${GRAYLOG_GELF_UDP_PORT}:12201/udp
-        user: graylog
-        volumes:
-          - ${DATA_PATH_HOST}/graylog:/usr/share/graylog/data
-        networks:
-          - backend
+#    graylog:
+#        build: ./graylog
+#        environment:
+#          - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD}
+#          - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_SHA256_PASSWORD}
+#          - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:${GRAYLOG_PORT}/
+#        links:
+#          - mongo
+#          - elasticsearch
+#        depends_on:
+#          - mongo
+#          - elasticsearch
+#        ports:
+#          # Graylog web interface and REST API
+#          - ${GRAYLOG_PORT}:9000
+#          # Syslog TCP
+#          - ${GRAYLOG_SYSLOG_TCP_PORT}:514
+#          # Syslog UDP
+#          - ${GRAYLOG_SYSLOG_UDP_PORT}:514/udp
+#          # GELF TCP
+#          - ${GRAYLOG_GELF_TCP_PORT}:12201
+#          # GELF UDP
+#          - ${GRAYLOG_GELF_UDP_PORT}:12201/udp
+#        user: graylog
+#        volumes:
+#          - ${DATA_PATH_HOST}/graylog:/usr/share/graylog/data
+#        networks:
+#          - backend
 
 ### Laravel Echo Server #######################################
     laravel-echo-server:
@@ -977,130 +965,130 @@ services:
         - backend
 
 ### Thumbor #########################################
-    thumbor:
-      build: ./thumbor
-      volumes:
-        - ${DATA_PATH_HOST}/thumbor/data:/data
-        - ${DATA_PATH_HOST}/thumbor/data:/logs
-      ports:
-        - "${THUMBOR_PORT}:8000"
-      environment:
-        - THUMBOR_LOG_FORMAT=${THUMBOR_LOG_FORMAT}
-        - THUMBOR_LOG_DATE_FORMAT=${THUMBOR_LOG_DATE_FORMAT}
-        - MAX_WIDTH=${MAX_WIDTH}
-        - MAX_HEIGHT=${MAX_HEIGHT}
-        - MIN_WIDTH=${MIN_WIDTH}
-        - MIN_HEIGHT=${MIN_HEIGHT}
-        - ALLOWED_SOURCES=${ALLOWED_SOURCES}
-        - QUALITY=${QUALITY}
-        - WEBP_QUALITY=${WEBP_QUALITY}
-        - PNG_COMPRESSION_LEVEL=${PNG_COMPRESSION_LEVEL}
-        - AUTO_WEBP=${AUTO_WEBP}
-        - MAX_AGE=${MAX_AGE}
-        - MAX_AGE_TEMP_IMAGE=${MAX_AGE_TEMP_IMAGE}
-        - RESPECT_ORIENTATION=${RESPECT_ORIENTATION}
-        - IGNORE_SMART_ERRORS=${IGNORE_SMART_ERRORS}
-        - PRESERVE_EXIF_INFO=${PRESERVE_EXIF_INFO}
-        - ALLOW_ANIMATED_GIFS=${ALLOW_ANIMATED_GIFS}
-        - USE_GIFSICLE_ENGINE=${USE_GIFSICLE_ENGINE}
-        - USE_BLACKLIST=${USE_BLACKLIST}
-        - LOADER=${LOADER}
-        - STORAGE=${STORAGE}
-        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-        - RESULT_STORAGE=${RESULT_STORAGE}
-        - ENGINE=${ENGINE}
-        - SECURITY_KEY=${SECURITY_KEY}
-        - ALLOW_UNSAFE_URL=${ALLOW_UNSAFE_URL}
-        - ALLOW_OLD_URLS=${ALLOW_OLD_URLS}
-        - FILE_LOADER_ROOT_PATH=${FILE_LOADER_ROOT_PATH}
-        - HTTP_LOADER_CONNECT_TIMEOUT=${HTTP_LOADER_CONNECT_TIMEOUT}
-        - HTTP_LOADER_REQUEST_TIMEOUT=${HTTP_LOADER_REQUEST_TIMEOUT}
-        - HTTP_LOADER_FOLLOW_REDIRECTS=${HTTP_LOADER_FOLLOW_REDIRECTS}
-        - HTTP_LOADER_MAX_REDIRECTS=${HTTP_LOADER_MAX_REDIRECTS}
-        - HTTP_LOADER_FORWARD_USER_AGENT=${HTTP_LOADER_FORWARD_USER_AGENT}
-        - HTTP_LOADER_DEFAULT_USER_AGENT=${HTTP_LOADER_DEFAULT_USER_AGENT}
-        - HTTP_LOADER_PROXY_HOST=${HTTP_LOADER_PROXY_HOST}
-        - HTTP_LOADER_PROXY_PORT=${HTTP_LOADER_PROXY_PORT}
-        - HTTP_LOADER_PROXY_USERNAME=${HTTP_LOADER_PROXY_USERNAME}
-        - HTTP_LOADER_PROXY_PASSWORD=${HTTP_LOADER_PROXY_PASSWORD}
-        - HTTP_LOADER_CA_CERTS=${HTTP_LOADER_CA_CERTS}
-        - HTTP_LOADER_VALIDATE_CERTS=${HTTP_LOADER_VALIDATE_CERTS}
-        - HTTP_LOADER_CLIENT_KEY=${HTTP_LOADER_CLIENT_KEY}
-        - HTTP_LOADER_CLIENT_CERT=${HTTP_LOADER_CLIENT_CERT}
-        - HTTP_LOADER_CURL_ASYNC_HTTP_CLIENT=${HTTP_LOADER_CURL_ASYNC_HTTP_CLIENT}
-        - STORAGE_EXPIRATION_SECONDS=${STORAGE_EXPIRATION_SECONDS}
-        - STORES_CRYPTO_KEY_FOR_EACH_IMAGE=${STORES_CRYPTO_KEY_FOR_EACH_IMAGE}
-        - FILE_STORAGE_ROOT_PATH=${FILE_STORAGE_ROOT_PATH}
-        - UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE}
-        - UPLOAD_ENABLED=${UPLOAD_ENABLED}
-        - UPLOAD_PHOTO_STORAGE=${UPLOAD_PHOTO_STORAGE}
-        - UPLOAD_DELETE_ALLOWED=${UPLOAD_DELETE_ALLOWED}
-        - UPLOAD_PUT_ALLOWED=${UPLOAD_PUT_ALLOWED}
-        - UPLOAD_DEFAULT_FILENAME=${UPLOAD_DEFAULT_FILENAME}
-        - MONGO_STORAGE_SERVER_HOST=${MONGO_STORAGE_SERVER_HOST}
-        - MONGO_STORAGE_SERVER_PORT=${MONGO_STORAGE_SERVER_PORT}
-        - MONGO_STORAGE_SERVER_DB=${MONGO_STORAGE_SERVER_DB}
-        - MONGO_STORAGE_SERVER_COLLECTION=${MONGO_STORAGE_SERVER_COLLECTION}
-        - REDIS_STORAGE_SERVER_HOST=${REDIS_STORAGE_SERVER_HOST}
-        - REDIS_STORAGE_SERVER_PORT=${REDIS_STORAGE_SERVER_PORT}
-        - REDIS_STORAGE_SERVER_DB=${REDIS_STORAGE_SERVER_DB}
-        - REDIS_STORAGE_SERVER_PASSWORD=${REDIS_STORAGE_SERVER_PASSWORD}
-        - REDIS_RESULT_STORAGE_SERVER_HOST=${REDIS_RESULT_STORAGE_SERVER_HOST}
-        - REDIS_RESULT_STORAGE_SERVER_PORT=${REDIS_RESULT_STORAGE_SERVER_PORT}
-        - REDIS_RESULT_STORAGE_SERVER_DB=${REDIS_RESULT_STORAGE_SERVER_DB}
-        - REDIS_RESULT_STORAGE_SERVER_PASSWORD=${REDIS_RESULT_STORAGE_SERVER_PASSWORD}
-        - MEMCACHE_STORAGE_SERVERS=${MEMCACHE_STORAGE_SERVERS}
-        - MIXED_STORAGE_FILE_STORAGE=${MIXED_STORAGE_FILE_STORAGE}
-        - MIXED_STORAGE_CRYPTO_STORAGE=${MIXED_STORAGE_CRYPTO_STORAGE}
-        - MIXED_STORAGE_DETECTOR_STORAGE=${MIXED_STORAGE_DETECTOR_STORAGE}
-        - META_CALLBACK_NAME=${META_CALLBACK_NAME}
-        - DETECTORS=${DETECTORS}
-        - FACE_DETECTOR_CASCADE_FILE=${FACE_DETECTOR_CASCADE_FILE}
-        - OPTIMIZERS=${OPTIMIZERS}
-        - JPEGTRAN_PATH=${JPEGTRAN_PATH}
-        - PROGRESSIVE_JPEG=${PROGRESSIVE_JPEG}
-        - RESULT_STORAGE_EXPIRATION_SECONDS=${RESULT_STORAGE_EXPIRATION_SECONDS}
-        - RESULT_STORAGE_FILE_STORAGE_ROOT_PATH=${RESULT_STORAGE_FILE_STORAGE_ROOT_PATH}
-        - RESULT_STORAGE_STORES_UNSAFE=${RESULT_STORAGE_STORES_UNSAFE}
-        - REDIS_QUEUE_SERVER_HOST=${REDIS_QUEUE_SERVER_HOST}
-        - REDIS_QUEUE_SERVER_PORT=${REDIS_QUEUE_SERVER_PORT}
-        - REDIS_QUEUE_SERVER_DB=${REDIS_QUEUE_SERVER_DB}
-        - REDIS_QUEUE_SERVER_PASSWORD=${REDIS_QUEUE_SERVER_PASSWORD}
-        - SQS_QUEUE_KEY_ID=${SQS_QUEUE_KEY_ID}
-        - SQS_QUEUE_KEY_SECRET=${SQS_QUEUE_KEY_SECRET}
-        - SQS_QUEUE_REGION=${SQS_QUEUE_REGION}
-        - USE_CUSTOM_ERROR_HANDLING=${USE_CUSTOM_ERROR_HANDLING}
-        - ERROR_HANDLER_MODULE=${ERROR_HANDLER_MODULE}
-        - ERROR_FILE_LOGGER=${ERROR_FILE_LOGGER}
-        - ERROR_FILE_NAME_USE_CONTEXT=${ERROR_FILE_NAME_USE_CONTEXT}
-        - SENTRY_DSN_URL=${SENTRY_DSN_URL}
-        - TC_AWS_REGION=${TC_AWS_REGION}
-        - TC_AWS_ENDPOINT=${TC_AWS_ENDPOINT}
-        - TC_AWS_STORAGE_BUCKET=${TC_AWS_STORAGE_BUCKET}
-        - TC_AWS_STORAGE_ROOT_PATH=${TC_AWS_STORAGE_ROOT_PATH}
-        - TC_AWS_LOADER_BUCKET=${TC_AWS_LOADER_BUCKET}
-        - TC_AWS_LOADER_ROOT_PATH=${TC_AWS_LOADER_ROOT_PATH}
-        - TC_AWS_RESULT_STORAGE_BUCKET=${TC_AWS_RESULT_STORAGE_BUCKET}
-        - TC_AWS_RESULT_STORAGE_ROOT_PATH=${TC_AWS_RESULT_STORAGE_ROOT_PATH}
-        - TC_AWS_STORAGE_SSE=${TC_AWS_STORAGE_SSE}
-        - TC_AWS_STORAGE_RRS=${TC_AWS_STORAGE_RRS}
-        - TC_AWS_ENABLE_HTTP_LOADER=${TC_AWS_ENABLE_HTTP_LOADER}
-        - TC_AWS_ALLOWED_BUCKETS=${TC_AWS_ALLOWED_BUCKETS}
-        - TC_AWS_STORE_METADATA=${TC_AWS_STORE_METADATA}
-      networks:
-        - frontend
-        - backend
+#    thumbor:
+#      build: ./thumbor
+#      volumes:
+#        - ${DATA_PATH_HOST}/thumbor/data:/data
+#        - ${DATA_PATH_HOST}/thumbor/data:/logs
+#      ports:
+#        - "${THUMBOR_PORT}:8000"
+#      environment:
+#        - THUMBOR_LOG_FORMAT=${THUMBOR_LOG_FORMAT}
+#        - THUMBOR_LOG_DATE_FORMAT=${THUMBOR_LOG_DATE_FORMAT}
+#        - MAX_WIDTH=${MAX_WIDTH}
+#        - MAX_HEIGHT=${MAX_HEIGHT}
+#        - MIN_WIDTH=${MIN_WIDTH}
+#        - MIN_HEIGHT=${MIN_HEIGHT}
+#        - ALLOWED_SOURCES=${ALLOWED_SOURCES}
+#        - QUALITY=${QUALITY}
+#        - WEBP_QUALITY=${WEBP_QUALITY}
+#        - PNG_COMPRESSION_LEVEL=${PNG_COMPRESSION_LEVEL}
+#        - AUTO_WEBP=${AUTO_WEBP}
+#        - MAX_AGE=${MAX_AGE}
+#        - MAX_AGE_TEMP_IMAGE=${MAX_AGE_TEMP_IMAGE}
+#        - RESPECT_ORIENTATION=${RESPECT_ORIENTATION}
+#        - IGNORE_SMART_ERRORS=${IGNORE_SMART_ERRORS}
+#        - PRESERVE_EXIF_INFO=${PRESERVE_EXIF_INFO}
+#        - ALLOW_ANIMATED_GIFS=${ALLOW_ANIMATED_GIFS}
+#        - USE_GIFSICLE_ENGINE=${USE_GIFSICLE_ENGINE}
+#        - USE_BLACKLIST=${USE_BLACKLIST}
+#        - LOADER=${LOADER}
+#        - STORAGE=${STORAGE}
+#        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+#        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+#        - RESULT_STORAGE=${RESULT_STORAGE}
+#        - ENGINE=${ENGINE}
+#        - SECURITY_KEY=${SECURITY_KEY}
+#        - ALLOW_UNSAFE_URL=${ALLOW_UNSAFE_URL}
+#        - ALLOW_OLD_URLS=${ALLOW_OLD_URLS}
+#        - FILE_LOADER_ROOT_PATH=${FILE_LOADER_ROOT_PATH}
+#        - HTTP_LOADER_CONNECT_TIMEOUT=${HTTP_LOADER_CONNECT_TIMEOUT}
+#        - HTTP_LOADER_REQUEST_TIMEOUT=${HTTP_LOADER_REQUEST_TIMEOUT}
+#        - HTTP_LOADER_FOLLOW_REDIRECTS=${HTTP_LOADER_FOLLOW_REDIRECTS}
+#        - HTTP_LOADER_MAX_REDIRECTS=${HTTP_LOADER_MAX_REDIRECTS}
+#        - HTTP_LOADER_FORWARD_USER_AGENT=${HTTP_LOADER_FORWARD_USER_AGENT}
+#        - HTTP_LOADER_DEFAULT_USER_AGENT=${HTTP_LOADER_DEFAULT_USER_AGENT}
+#        - HTTP_LOADER_PROXY_HOST=${HTTP_LOADER_PROXY_HOST}
+#        - HTTP_LOADER_PROXY_PORT=${HTTP_LOADER_PROXY_PORT}
+#        - HTTP_LOADER_PROXY_USERNAME=${HTTP_LOADER_PROXY_USERNAME}
+#        - HTTP_LOADER_PROXY_PASSWORD=${HTTP_LOADER_PROXY_PASSWORD}
+#        - HTTP_LOADER_CA_CERTS=${HTTP_LOADER_CA_CERTS}
+#        - HTTP_LOADER_VALIDATE_CERTS=${HTTP_LOADER_VALIDATE_CERTS}
+#        - HTTP_LOADER_CLIENT_KEY=${HTTP_LOADER_CLIENT_KEY}
+#        - HTTP_LOADER_CLIENT_CERT=${HTTP_LOADER_CLIENT_CERT}
+#        - HTTP_LOADER_CURL_ASYNC_HTTP_CLIENT=${HTTP_LOADER_CURL_ASYNC_HTTP_CLIENT}
+#        - STORAGE_EXPIRATION_SECONDS=${STORAGE_EXPIRATION_SECONDS}
+#        - STORES_CRYPTO_KEY_FOR_EACH_IMAGE=${STORES_CRYPTO_KEY_FOR_EACH_IMAGE}
+#        - FILE_STORAGE_ROOT_PATH=${FILE_STORAGE_ROOT_PATH}
+#        - UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE}
+#        - UPLOAD_ENABLED=${UPLOAD_ENABLED}
+#        - UPLOAD_PHOTO_STORAGE=${UPLOAD_PHOTO_STORAGE}
+#        - UPLOAD_DELETE_ALLOWED=${UPLOAD_DELETE_ALLOWED}
+#        - UPLOAD_PUT_ALLOWED=${UPLOAD_PUT_ALLOWED}
+#        - UPLOAD_DEFAULT_FILENAME=${UPLOAD_DEFAULT_FILENAME}
+#        - MONGO_STORAGE_SERVER_HOST=${MONGO_STORAGE_SERVER_HOST}
+#        - MONGO_STORAGE_SERVER_PORT=${MONGO_STORAGE_SERVER_PORT}
+#        - MONGO_STORAGE_SERVER_DB=${MONGO_STORAGE_SERVER_DB}
+#        - MONGO_STORAGE_SERVER_COLLECTION=${MONGO_STORAGE_SERVER_COLLECTION}
+#        - REDIS_STORAGE_SERVER_HOST=${REDIS_STORAGE_SERVER_HOST}
+#        - REDIS_STORAGE_SERVER_PORT=${REDIS_STORAGE_SERVER_PORT}
+#        - REDIS_STORAGE_SERVER_DB=${REDIS_STORAGE_SERVER_DB}
+#        - REDIS_STORAGE_SERVER_PASSWORD=${REDIS_STORAGE_SERVER_PASSWORD}
+#        - REDIS_RESULT_STORAGE_SERVER_HOST=${REDIS_RESULT_STORAGE_SERVER_HOST}
+#        - REDIS_RESULT_STORAGE_SERVER_PORT=${REDIS_RESULT_STORAGE_SERVER_PORT}
+#        - REDIS_RESULT_STORAGE_SERVER_DB=${REDIS_RESULT_STORAGE_SERVER_DB}
+#        - REDIS_RESULT_STORAGE_SERVER_PASSWORD=${REDIS_RESULT_STORAGE_SERVER_PASSWORD}
+#        - MEMCACHE_STORAGE_SERVERS=${MEMCACHE_STORAGE_SERVERS}
+#        - MIXED_STORAGE_FILE_STORAGE=${MIXED_STORAGE_FILE_STORAGE}
+#        - MIXED_STORAGE_CRYPTO_STORAGE=${MIXED_STORAGE_CRYPTO_STORAGE}
+#        - MIXED_STORAGE_DETECTOR_STORAGE=${MIXED_STORAGE_DETECTOR_STORAGE}
+#        - META_CALLBACK_NAME=${META_CALLBACK_NAME}
+#        - DETECTORS=${DETECTORS}
+#        - FACE_DETECTOR_CASCADE_FILE=${FACE_DETECTOR_CASCADE_FILE}
+#        - OPTIMIZERS=${OPTIMIZERS}
+#        - JPEGTRAN_PATH=${JPEGTRAN_PATH}
+#        - PROGRESSIVE_JPEG=${PROGRESSIVE_JPEG}
+#        - RESULT_STORAGE_EXPIRATION_SECONDS=${RESULT_STORAGE_EXPIRATION_SECONDS}
+#        - RESULT_STORAGE_FILE_STORAGE_ROOT_PATH=${RESULT_STORAGE_FILE_STORAGE_ROOT_PATH}
+#        - RESULT_STORAGE_STORES_UNSAFE=${RESULT_STORAGE_STORES_UNSAFE}
+#        - REDIS_QUEUE_SERVER_HOST=${REDIS_QUEUE_SERVER_HOST}
+#        - REDIS_QUEUE_SERVER_PORT=${REDIS_QUEUE_SERVER_PORT}
+#        - REDIS_QUEUE_SERVER_DB=${REDIS_QUEUE_SERVER_DB}
+#        - REDIS_QUEUE_SERVER_PASSWORD=${REDIS_QUEUE_SERVER_PASSWORD}
+#        - SQS_QUEUE_KEY_ID=${SQS_QUEUE_KEY_ID}
+#        - SQS_QUEUE_KEY_SECRET=${SQS_QUEUE_KEY_SECRET}
+#        - SQS_QUEUE_REGION=${SQS_QUEUE_REGION}
+#        - USE_CUSTOM_ERROR_HANDLING=${USE_CUSTOM_ERROR_HANDLING}
+#        - ERROR_HANDLER_MODULE=${ERROR_HANDLER_MODULE}
+#        - ERROR_FILE_LOGGER=${ERROR_FILE_LOGGER}
+#        - ERROR_FILE_NAME_USE_CONTEXT=${ERROR_FILE_NAME_USE_CONTEXT}
+#        - SENTRY_DSN_URL=${SENTRY_DSN_URL}
+#        - TC_AWS_REGION=${TC_AWS_REGION}
+#        - TC_AWS_ENDPOINT=${TC_AWS_ENDPOINT}
+#        - TC_AWS_STORAGE_BUCKET=${TC_AWS_STORAGE_BUCKET}
+#        - TC_AWS_STORAGE_ROOT_PATH=${TC_AWS_STORAGE_ROOT_PATH}
+#        - TC_AWS_LOADER_BUCKET=${TC_AWS_LOADER_BUCKET}
+#        - TC_AWS_LOADER_ROOT_PATH=${TC_AWS_LOADER_ROOT_PATH}
+#        - TC_AWS_RESULT_STORAGE_BUCKET=${TC_AWS_RESULT_STORAGE_BUCKET}
+#        - TC_AWS_RESULT_STORAGE_ROOT_PATH=${TC_AWS_RESULT_STORAGE_ROOT_PATH}
+#        - TC_AWS_STORAGE_SSE=${TC_AWS_STORAGE_SSE}
+#        - TC_AWS_STORAGE_RRS=${TC_AWS_STORAGE_RRS}
+#        - TC_AWS_ENABLE_HTTP_LOADER=${TC_AWS_ENABLE_HTTP_LOADER}
+#        - TC_AWS_ALLOWED_BUCKETS=${TC_AWS_ALLOWED_BUCKETS}
+#        - TC_AWS_STORE_METADATA=${TC_AWS_STORE_METADATA}
+#      networks:
+#        - frontend
+#        - backend
 
 ### AWS EB-CLI ################################################
-    aws:
-      build:
-        context: ./aws-eb-cli
-      volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
-      depends_on:
-        - workspace
-      tty: true
+#    aws:
+#      build:
+#        context: ./aws-eb-cli
+#      volumes:
+#        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+#      depends_on:
+#        - workspace
+#      tty: true
 
 ### Portainer ################################################
     portainer:
@@ -1163,59 +1151,59 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock:rw
 
 ### JupyterHub #########################################
-    jupyterhub:
-      build:
-        context: ./jupyterhub
-      depends_on:
-        - postgres
-        - jupyterhub-user
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock:rw
-        - ${DATA_PATH_HOST}/jupyterhub/:/data
-        - ${JUPYTERHUB_CUSTOM_CONFIG}:/jupyterhub_config.py
-        - ${JUPYTERHUB_USER_DATA}:/user-data
-        - ${JUPYTERHUB_USER_LIST}:/userlist
-      networks:
-        - backend
-      ports:
-        - "${JUPYTERHUB_PORT}:80"
-      environment:
-        - TERM=xterm
-        - JUPYTERHUB_USER_DATA=${JUPYTERHUB_USER_DATA}
-        - JUPYTERHUB_POSTGRES_DB=${JUPYTERHUB_POSTGRES_DB}
-        - JUPYTERHUB_POSTGRES_USER=${JUPYTERHUB_POSTGRES_USER}
-        - JUPYTERHUB_POSTGRES_HOST=${JUPYTERHUB_POSTGRES_HOST}
-        - JUPYTERHUB_POSTGRES_PASSWORD=${JUPYTERHUB_POSTGRES_PASSWORD}
-        - JUPYTERHUB_OAUTH_CALLBACK_URL=${JUPYTERHUB_OAUTH_CALLBACK_URL}
-        - JUPYTERHUB_OAUTH_CLIENT_ID=${JUPYTERHUB_OAUTH_CLIENT_ID}
-        - JUPYTERHUB_OAUTH_CLIENT_SECRET=${JUPYTERHUB_OAUTH_CLIENT_SECRET}
-        - JUPYTERHUB_LOCAL_NOTEBOOK_IMAGE=${COMPOSE_PROJECT_NAME}_jupyterhub-user
-        - JUPYTERHUB_ENABLE_NVIDIA=${JUPYTERHUB_ENABLE_NVIDIA}
-    jupyterhub-user:
-      build:
-        context: ./jupyterhub
-        dockerfile: Dockerfile.user
-      command: ["sh", "-c", "echo \"build only\""]
+#     jupyterhub:
+#       build:
+#         context: ./jupyterhub
+#       depends_on:
+#         - postgres
+#         - jupyterhub-user
+#       volumes:
+#         - /var/run/docker.sock:/var/run/docker.sock:rw
+#         - ${DATA_PATH_HOST}/jupyterhub/:/data
+#         - ${JUPYTERHUB_CUSTOM_CONFIG}:/jupyterhub_config.py
+#         - ${JUPYTERHUB_USER_DATA}:/user-data
+#         - ${JUPYTERHUB_USER_LIST}:/userlist
+#       networks:
+#         - backend
+#       ports:
+#         - "${JUPYTERHUB_PORT}:80"
+#       environment:
+#         - TERM=xterm
+#         - JUPYTERHUB_USER_DATA=${JUPYTERHUB_USER_DATA}
+#         - JUPYTERHUB_POSTGRES_DB=${JUPYTERHUB_POSTGRES_DB}
+#         - JUPYTERHUB_POSTGRES_USER=${JUPYTERHUB_POSTGRES_USER}
+#         - JUPYTERHUB_POSTGRES_HOST=${JUPYTERHUB_POSTGRES_HOST}
+#         - JUPYTERHUB_POSTGRES_PASSWORD=${JUPYTERHUB_POSTGRES_PASSWORD}
+#         - JUPYTERHUB_OAUTH_CALLBACK_URL=${JUPYTERHUB_OAUTH_CALLBACK_URL}
+#         - JUPYTERHUB_OAUTH_CLIENT_ID=${JUPYTERHUB_OAUTH_CLIENT_ID}
+#         - JUPYTERHUB_OAUTH_CLIENT_SECRET=${JUPYTERHUB_OAUTH_CLIENT_SECRET}
+#         - JUPYTERHUB_LOCAL_NOTEBOOK_IMAGE=${COMPOSE_PROJECT_NAME}_jupyterhub-user
+#         - JUPYTERHUB_ENABLE_NVIDIA=${JUPYTERHUB_ENABLE_NVIDIA}
+#     jupyterhub-user:
+#       build:
+#         context: ./jupyterhub
+#         dockerfile: Dockerfile.user
+#       command: ["sh", "-c", "echo \"build only\""]
 
 ### IPython #########################################
-    ipython-controller:
-      build:
-        context: ./ipython
-        dockerfile: Dockerfile.controller
-      networks:
-        - backend
-      extra_hosts:
-        - "laradock-ipython:${LARADOCK_IPYTHON_CONTROLLER_IP}"
-      ports:
-        - "33327-33338:33327-33338"
-    ipython-engine:
-      build:
-        context: ./ipython
-        dockerfile: Dockerfile.engine
-      networks:
-        - backend
-      extra_hosts:
-        - "laradock-ipython:${LARADOCK_IPYTHON_CONTROLLER_IP}"
+#   ipython-controller:
+#      build:
+#        context: ./ipython
+#        dockerfile: Dockerfile.controller
+#      networks:
+#        - backend
+#      extra_hosts:
+#        - "laradock-ipython:${LARADOCK_IPYTHON_CONTROLLER_IP}"
+#      ports:
+#        - "33327-33338:33327-33338"
+#    ipython-engine:
+#      build:
+#        context: ./ipython
+#        dockerfile: Dockerfile.engine
+#      networks:
+#        - backend
+#      extra_hosts:
+#        - "laradock-ipython:${LARADOCK_IPYTHON_CONTROLLER_IP}"
 
 ### Docker-in-Docker ################################################
     docker-in-docker:
@@ -1242,37 +1230,37 @@ services:
         - backend
 
 ### REDISWEBUI ################################################
-    redis-webui:
-      build:
-        context: ./redis-webui
-      environment:
-        - ADMIN_USER=${REDIS_WEBUI_USERNAME}
-        - ADMIN_PASS=${REDIS_WEBUI_PASSWORD}
-        - REDIS_1_HOST=${REDIS_WEBUI_CONNECT_HOST}
-        - REDIS_1_PORT=${REDIS_WEBUI_CONNECT_PORT}
-      networks:
-        - backend
-      ports:
-        - "${REDIS_WEBUI_PORT}:80"
-      depends_on:
-        - redis
+#    redis-webui:
+#      build:
+#        context: ./redis-webui
+#      environment:
+#        - ADMIN_USER=${REDIS_WEBUI_USERNAME}
+#        - ADMIN_PASS=${REDIS_WEBUI_PASSWORD}
+#        - REDIS_1_HOST=${REDIS_WEBUI_CONNECT_HOST}
+#        - REDIS_1_PORT=${REDIS_WEBUI_CONNECT_PORT}
+#      networks:
+#        - backend
+#      ports:
+#        - "${REDIS_WEBUI_PORT}:80"
+#      depends_on:
+#        - redis
 
 ### MongoWebUI ################################################
-    mongo-webui:
-      build:
-        context: ./mongo-webui
-      environment:
-        - ROOT_URL=${MONGO_WEBUI_ROOT_URL}
-        - MONGO_URL=${MONGO_WEBUI_MONGO_URL}
-        - INSTALL_MONGO=${MONGO_WEBUI_INSTALL_MONGO}
-      volumes:
-        - ${DATA_PATH_HOST}/mongo-webui:/data/db
-      ports:
-        - "${MONGO_WEBUI_PORT}:3000"
-      networks:
-        - backend
-      depends_on:
-        - mongo
+#    mongo-webui:
+#      build:
+#        context: ./mongo-webui
+#      environment:
+#        - ROOT_URL=${MONGO_WEBUI_ROOT_URL}
+#        - MONGO_URL=${MONGO_WEBUI_MONGO_URL}
+#        - INSTALL_MONGO=${MONGO_WEBUI_INSTALL_MONGO}
+#      volumes:
+#        - ${DATA_PATH_HOST}/mongo-webui:/data/db
+#      ports:
+#        - "${MONGO_WEBUI_PORT}:3000"
+#      networks:
+#        - backend
+#      depends_on:
+#        - mongo
 
 ### Metabase #################################################
     metabase:
@@ -1287,91 +1275,91 @@ services:
         - backend
 
 ### IDE-THEIA ################################################
-    ide-theia:
-      build:
-        context: ./ide-theia
-      volumes:
-        - ${APP_CODE_PATH_HOST}:/home/project
-      ports:
-        - "${IDE_THEIA_PORT}:3000"
-      networks:
-        - backend
+#    ide-theia:
+#      build:
+#        context: ./ide-theia
+#      volumes:
+#        - ${APP_CODE_PATH_HOST}:/home/project
+#      ports:
+#        - "${IDE_THEIA_PORT}:3000"
+#      networks:
+#        - backend
 
 ### IDE-WEBIDE ################################################
-    ide-webide:
-      build:
-        context: ./ide-webide
-      volumes:
-        - ${DATA_PATH_HOST}/ide/webide/ide.db:/root/.coding-ide/ide.db
-      ports:
-        - "${IDE_WEBIDE_PORT}:8080"
-      networks:
-        - backend
+#    ide-webide:
+#      build:
+#        context: ./ide-webide
+#      volumes:
+#        - ${DATA_PATH_HOST}/ide/webide/ide.db:/root/.coding-ide/ide.db
+#      ports:
+#        - "${IDE_WEBIDE_PORT}:8080"
+#      networks:
+#        - backend
 
 ### IDE-CODIAD ################################################
-    ide-codiad:
-      build:
-        context: ./ide-codiad
-      environment:
-        - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
-        - TZ=${WORKSPACE_TIMEZONE}
-        - PGID=1000
-        - PUID=1000
-      volumes:
-        - /etc/localtime:/etc/localtime:ro
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-        - ${DATA_PATH_HOST}/ide/codiad:/config
-      ports:
-        - "${IDE_CODIAD_PORT}:80"
-      networks:
-        - backend
+#    ide-codiad:
+#      build:
+#        context: ./ide-codiad
+#      environment:
+#        - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
+#        - TZ=${WORKSPACE_TIMEZONE}
+#        - PGID=1000
+#        - PUID=1000
+#      volumes:
+#        - /etc/localtime:/etc/localtime:ro
+#        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+#        - ${DATA_PATH_HOST}/ide/codiad:/config
+#      ports:
+#        - "${IDE_CODIAD_PORT}:80"
+#      networks:
+#        - backend
 
 ### IDE-ICECODER ################################################
-    ide-icecoder:
-      build:
-        context: ./ide-icecoder
-      environment:
-        - DOCUMENT_ROOT=${APP_CODE_PATH_CONTAINER}
-        - TZ=${WORKSPACE_TIMEZONE}
-        - PGID=1000
-        - PUID=1000
-      volumes:
-        - /etc/localtime:/etc/localtime:ro
-        - ${APP_CODE_PATH_HOST}:/home/laradock/ICEcoder/dev
-      ports:
-        - "${IDE_ICECODER_PORT}:8080"
-      networks:
-        - backend
+#    ide-icecoder:
+#      build:
+#        context: ./ide-icecoder
+#      environment:
+#        - DOCUMENT_ROOT=${APP_CODE_PATH_CONTAINER}
+#        - TZ=${WORKSPACE_TIMEZONE}
+#        - PGID=1000
+#        - PUID=1000
+#      volumes:
+#        - /etc/localtime:/etc/localtime:ro
+#        - ${APP_CODE_PATH_HOST}:/home/laradock/ICEcoder/dev
+#      ports:
+#        - "${IDE_ICECODER_PORT}:8080"
+#      networks:
+#        - backend
 
 ### DOCKER-REGISTRY ################################################
-    docker-registry:
-      build:
-        context: ./docker-registry
-      volumes:
-        - /etc/localtime:/etc/localtime:ro
-        - ${DATA_PATH_HOST}/docker-registry:/var/lib/registry
-      ports:
-        - "${DOCKER_REGISTRY_PORT}:5000"
-      networks:
-        - backend
+#    docker-registry:
+#      build:
+#        context: ./docker-registry
+#      volumes:
+#        - /etc/localtime:/etc/localtime:ro
+#        - ${DATA_PATH_HOST}/docker-registry:/var/lib/registry
+#      ports:
+#        - "${DOCKER_REGISTRY_PORT}:5000"
+#      networks:
+#        - backend
 
 ### DOCKER-WEB-UI ################################################
-    docker-web-ui:
-      build:
-        context: ./docker-web-ui
-      environment:
-        - TZ=${WORKSPACE_TIMEZONE}
-        - ENV_DOCKER_REGISTRY_HOST=${DOCKER_WEBUI_REGISTRY_HOST}
-        - ENV_DOCKER_REGISTRY_PORT=${DOCKER_WEBUI_REGISTRY_PORT}
-        - ENV_DOCKER_REGISTRY_USE_SSL=${DOCKER_REGISTRY_USE_SSL}
-        - ENV_MODE_BROWSE_ONLY=${DOCKER_REGISTRY_BROWSE_ONLY}
-      volumes:
-        - /etc/localtime:/etc/localtime:ro
-      ports:
-        - "${DOCKER_WEBUI_PORT}:80"
-      networks:
-        - frontend
-        - backend
+#    docker-web-ui:
+#      build:
+#        context: ./docker-web-ui
+#      environment:
+#        - TZ=${WORKSPACE_TIMEZONE}
+#        - ENV_DOCKER_REGISTRY_HOST=${DOCKER_WEBUI_REGISTRY_HOST}
+#        - ENV_DOCKER_REGISTRY_PORT=${DOCKER_WEBUI_REGISTRY_PORT}
+#        - ENV_DOCKER_REGISTRY_USE_SSL=${DOCKER_REGISTRY_USE_SSL}
+#        - ENV_MODE_BROWSE_ONLY=${DOCKER_REGISTRY_BROWSE_ONLY}
+#      volumes:
+#        - /etc/localtime:/etc/localtime:ro
+#      ports:
+#        - "${DOCKER_WEBUI_PORT}:80"
+#      networks:
+#        - frontend
+#        - backend
 
 ### MAILU ################################################
     mailu:
@@ -1537,83 +1525,83 @@ services:
             - fetchmail
 
 ### TRAEFIK #########################################
-    traefik:
-      build:
-        context: ./traefik
-      command: --docker
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-      ports:
-        - "${TRAEFIK_HOST_HTTP_PORT}:80"
-        - "${TRAEFIK_HOST_HTTPS_PORT}:443"
-      networks:
-        - frontend
-        - backend
-      labels:
-        - traefik.backend=traefik
-        - traefik.frontend.rule=Host:monitor.localhost
-        - traefik.port=8080
+#    traefik:
+#      build:
+#        context: ./traefik
+#      command: --docker
+#      volumes:
+#        - /var/run/docker.sock:/var/run/docker.sock
+#      ports:
+#        - "${TRAEFIK_HOST_HTTP_PORT}:80"
+#        - "${TRAEFIK_HOST_HTTPS_PORT}:443"
+#      networks:
+#        - frontend
+#        - backend
+#      labels:
+#        - traefik.backend=traefik
+#        - traefik.frontend.rule=Host:monitor.localhost
+#        - traefik.port=8080
 
 ### MOSQUITTO Broker #########################################
-    mosquitto:
-      build:
-        context: ./mosquitto
-      volumes:
-        - ${DATA_PATH_HOST}/mosquitto/data:/mosquitto/data
-      ports:
-        - "${MOSQUITTO_PORT}:9001"
-      networks:
-        - frontend
-        - backend
+#    mosquitto:
+#      build:
+#        context: ./mosquitto
+#      volumes:
+#        - ${DATA_PATH_HOST}/mosquitto/data:/mosquitto/data
+#      ports:
+#        - "${MOSQUITTO_PORT}:9001"
+#      networks:
+#        - frontend
+#        - backend
 
 ### COUCHDB ###################################################
-    couchdb:
-      build:
-        context: ./couchdb
-      volumes:
-        - ${DATA_PATH_HOST}/couchdb/data:/opt/couchdb/data
-      ports:
-        - "${COUCHDB_PORT}:5984"
-      networks:
-        - backend
+#    couchdb:
+#      build:
+#        context: ./couchdb
+#      volumes:
+#        - ${DATA_PATH_HOST}/couchdb/data:/opt/couchdb/data
+#      ports:
+#        - "${COUCHDB_PORT}:5984"
+#      networks:
+#        - backend
 
 ### Manticore Search ###########################################
-    manticore:
-      build:
-        context: ./manticore
-      volumes:
-        - ${MANTICORE_CONFIG_PATH}:/etc/sphinxsearch
-        - ${DATA_PATH_HOST}/manticore/data:/var/lib/manticore/data
-        - ${DATA_PATH_HOST}/manticore/log:/var/lib/manticore/log
-      ports:
-        - "${MANTICORE_API_PORT}:9312"
-        - "${MANTICORE_SPHINXQL_PORT}:9306"
-        - "${MANTICORE_HTTP_PORT}:9308"
-      networks:
-        - backend
+#    manticore:
+#      build:
+#        context: ./manticore
+#      volumes:
+#        - ${MANTICORE_CONFIG_PATH}:/etc/sphinxsearch
+#        - ${DATA_PATH_HOST}/manticore/data:/var/lib/manticore/data
+#        - ${DATA_PATH_HOST}/manticore/log:/var/lib/manticore/log
+#      ports:
+#        - "${MANTICORE_API_PORT}:9312"
+#        - "${MANTICORE_SPHINXQL_PORT}:9306"
+#        - "${MANTICORE_HTTP_PORT}:9308"
+#      networks:
+#        - backend
 
 ### SONARQUBE ################################################
-    sonarqube:
-      build:
-        context: ./sonarqube
-      hostname: "${SONARQUBE_HOSTNAME}"
-      volumes:
-        - ${DATA_PATH_HOST}/sonarqube/conf:/opt/sonarqube/conf
-        - ${DATA_PATH_HOST}/sonarqube/data:/opt/sonarqube/data
-        - ${DATA_PATH_HOST}/sonarqube/logs:/opt/sonarqube/logs
-        - ${DATA_PATH_HOST}/sonarqube/extensions:/opt/sonarqube/extensions
-        - ${DATA_PATH_HOST}/sonarqube/plugins:/opt/sonarqube/lib/bundled-plugins
-      ports:
-        - ${SONARQUBE_PORT}:9000
-      depends_on:
-        - postgres
-      environment:
-        - sonar.jdbc.username=${SONARQUBE_POSTGRES_USER}
-        - sonar.jdbc.password=${SONARQUBE_POSTGRES_PASSWORD}
-        - sonar.jdbc.url=jdbc:postgresql://${SONARQUBE_POSTGRES_HOST}:5432/${SONARQUBE_POSTGRES_DB}
-      networks:
-        - backend
-        - frontend
+#    sonarqube:
+#      build:
+#        context: ./sonarqube
+#      hostname: "${SONARQUBE_HOSTNAME}"
+#      volumes:
+#        - ${DATA_PATH_HOST}/sonarqube/conf:/opt/sonarqube/conf
+#        - ${DATA_PATH_HOST}/sonarqube/data:/opt/sonarqube/data
+#        - ${DATA_PATH_HOST}/sonarqube/logs:/opt/sonarqube/logs
+#        - ${DATA_PATH_HOST}/sonarqube/extensions:/opt/sonarqube/extensions
+#        - ${DATA_PATH_HOST}/sonarqube/plugins:/opt/sonarqube/lib/bundled-plugins
+#      ports:
+#        - ${SONARQUBE_PORT}:9000
+#      depends_on:
+#        - postgres
+#      environment:
+#        - sonar.jdbc.username=${SONARQUBE_POSTGRES_USER}
+#        - sonar.jdbc.password=${SONARQUBE_POSTGRES_PASSWORD}
+#        - sonar.jdbc.url=jdbc:postgresql://${SONARQUBE_POSTGRES_HOST}:5432/${SONARQUBE_POSTGRES_DB}
+#      networks:
+#        - backend
+#        - frontend
 ### CONFLUENCE ################################################
     confluence:
       container_name: Confluence
