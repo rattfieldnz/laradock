@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$(docker ps -q -f name=workspace)" ]; then
+    winpty docker-compose exec workspace bash;
+else
+    echo "The 'workspace' container does not exist.";
+	echo "Use 'docker-compose up -d workspace' to create it, then run this script again.";
+fi

@@ -79,7 +79,7 @@ RUN set -xe; \
 # Set Timezone
 ###########################################################################
 
-ARG TZ=UTC
+ARG TZ=Pacific/Auckland
 ENV TZ ${TZ}
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -1169,3 +1169,16 @@ RUN apt-get clean && \
 
 # Set default work directory
 WORKDIR /var/www
+
+# Install PHP Dependencies with Composer
+# composer.json copied from my project
+ADD ./composer.json /var/www/
+RUN composer install
+
+# Add App/Project Files
+ADD ./ /var/www/
+RUN composer dump-autoload --optimize
+
+# Install Node Dependencies
+# RUN ls -ll /var/www && sleep 30;
+RUN yarn install --force;

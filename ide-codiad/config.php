@@ -18,7 +18,7 @@ define("WHITEPATHS", BASE_PATH . ",/home,/");
 // SESSIONS (e.g. 7200)
 $cookie_lifetime = "0";
 // TIMEZONE
-date_default_timezone_set(getenv('TZ','UTC'));
+date_default_timezone_set(getenv('TZ','Pacific/Auckland'));
 // Allows to overwrite the default language
 //define("LANGUAGE", "en");
 // External Authentification

@@ -29,11 +29,20 @@ RUN if [ ${CHANGE_SOURCE} = true ]; then \
     sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list \
 ;fi
 
+# Install necessary packages for PHP extensions.
+RUN set -xe; \
+    apt-get update && apt-get -f -y upgrade && apt-get -f -y dist-upgrade; \
+    apt-get install -f -y git autoconf automake libtool libzip-dev zlib1g-dev \ 
+	libicu-dev g++ libxml2-dev curl libfreetype6-dev libpng-dev libjpeg-dev \ 
+	libwebp-dev node-gyp libnode-dev lsb-release gcc make autoconf libc-dev \ 
+	pkg-config libgeoip-dev && \
+    echo 'memory_limit=-1' | tee -a /usr/local/etc/php/php.ini;
+
 # always run apt update when start and after add new source list, then clean up at end.
 RUN set -xe; \
     apt-get update -yqq && \
     pecl channel-update pecl.php.net && \
-    apt-get install -yqq \
+    apt-get install -f -yqq \
       apt-utils \
       #
       #--------------------------------------------------------------------------
@@ -46,11 +55,50 @@ RUN set -xe; \
       # base image (https://github.com/Laradock/php-fpm).
       #
       # next lines are here becase there is no auto build on dockerhub see https://github.com/laradock/laradock/pull/1903#issuecomment-463142846
-      libzip-dev zip unzip && \
-      docker-php-ext-configure zip --with-libzip && \
-      # Install the zip extension
-      docker-php-ext-install zip && \
-      php -m | grep -q 'zip'
+      libzip-dev zip unzip;
+	  
+# Configure and install PHP extensions.
+RUN set -xe ; \
+	docker-php-ext-configure zip --with-libzip && docker-php-ext-install zip && \
+	docker-php-ext-configure intl && docker-php-ext-install intl && \
+	docker-php-ext-install pdo_mysql && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
+	docker-php-ext-install bcmath && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+	docker-php-ext-install -j$(nproc) gd && \
+	docker-php-ext-configure exif --enable-exif && docker-php-ext-install exif;
+	
+	
+# Enable PHP extensions.
+
+# RUN set -xe ; apt-get install -y geoip-database libgeoip-dev && \
+# 	  pecl install geoip-beta geoip && \
+# 	  docker-php-ext-enable geoip;
+	  
+# Install geoip extension manually.
+
+RUN git clone --recursive https://github.com/maxmind/libmaxminddb && \
+    cd libmaxminddb && \
+	autoreconf -i && \
+	autoconf && \
+    ./configure && \
+	make && \
+	make install && \
+	ldconfig && \
+	mkdir -p /etc/php/${LARADOCK_PHP_VERSION}/mods-available && \
+	echo "" > /etc/php/${LARADOCK_PHP_VERSION}/mods-available/maxminddb.ini && \
+	echo "" > /etc/php/${LARADOCK_PHP_VERSION}/mods-available/geoip.ini && \
+	bash -c "echo extension=maxminddb.so > /etc/php/${LARADOCK_PHP_VERSION}/mods-available/maxminddb.ini" && \
+	bash -c "echo extension=geoip.so > /etc/php/${LARADOCK_PHP_VERSION}/mods-available/geoip.ini" && \
+	cd ../ && rm -rf libmaxminddb;
+	
+RUN git clone --recursive https://github.com/maxmind/MaxMind-DB-Reader-php && \
+    cd MaxMind-DB-Reader-php && \
+	cd ext && \
+    phpize && \
+	autoconf && \
+    ./configure && \
+    make && \
+    make install && \
+	cd ../ && rm -rf MaxMind-DB-Reader-php;
 
 #
 #--------------------------------------------------------------------------
@@ -89,7 +137,7 @@ USER root
 ARG INSTALL_FAKETIME=false
 
 RUN if [ ${INSTALL_FAKETIME} = true ]; then \
-    apt-get install -y libfaketime \
+    apt-get install -f -y libfaketime \
 ;fi
 
 ###########################################################################
@@ -140,9 +188,9 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
     # Install the pgsql client
-    apt-get install -y postgresql-client && \
+    apt-get install -f -y postgresql-client && \
     if [ ${INSTALL_POSTGIS} = true ]; then \
-      apt-get install -y postgis; \
+      apt-get install -f -y postgis; \
     fi \
 ;fi
 
@@ -150,7 +198,7 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
 # xDebug:
 ###########################################################################
 
-ARG INSTALL_XDEBUG=false
+ARG INSTALL_XDEBUG=true
 
 RUN if [ ${INSTALL_XDEBUG} = true ]; then \
   # Install the xdebug extension
@@ -177,7 +225,7 @@ ARG INSTALL_PHPDBG=false
 
 RUN if [ ${INSTALL_PHPDBG} = true ]; then \
     # Load the xdebug extension only with phpunit commands
-    apt-get install -y --force-yes php${LARADOCK_PHP_VERSION}-phpdbg \
+    apt-get install -f -y --force-yes php${LARADOCK_PHP_VERSION}-phpdbg \
 ;fi
 
 ###########################################################################
@@ -198,7 +246,7 @@ RUN if [ ${INSTALL_XDEBUG} = false -a ${INSTALL_BLACKFIRE} = true ]; then \
 # PHP REDIS EXTENSION
 ###########################################################################
 
-ARG INSTALL_PHPREDIS=false
+ARG INSTALL_PHPREDIS=true
 
 RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
     # Install Php Redis Extension
@@ -357,7 +405,7 @@ RUN if [ ${INSTALL_PCNTL} = true ]; then \
 # bcmath:
 ###########################################################################
 
-ARG INSTALL_BCMATH=false
+ARG INSTALL_BCMATH=true
 
 RUN if [ ${INSTALL_BCMATH} = true ]; then \
     # Install the bcmath extension
@@ -372,7 +420,7 @@ ARG INSTALL_GMP=false
 
 RUN if [ ${INSTALL_GMP} = true ]; then \
     # Install the GMP extension
-	  apt-get install -y libgmp-dev && \
+	  apt-get install -f -y libgmp-dev && \
     if [ $(php -r "echo PHP_MAJOR_VERSION;") = "5" ]; then \
       ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
     ;fi && \
@@ -383,7 +431,7 @@ RUN if [ ${INSTALL_GMP} = true ]; then \
 # PHP Memcached:
 ###########################################################################
 
-ARG INSTALL_MEMCACHED=false
+ARG INSTALL_MEMCACHED=true
 
 RUN if [ ${INSTALL_MEMCACHED} = true ]; then \
     # Install the php memcached extension
@@ -399,7 +447,7 @@ RUN if [ ${INSTALL_MEMCACHED} = true ]; then \
 # Exif:
 ###########################################################################
 
-ARG INSTALL_EXIF=false
+ARG INSTALL_EXIF=true
 
 RUN if [ ${INSTALL_EXIF} = true ]; then \
     # Enable Exif PHP extentions requirements
@@ -417,7 +465,7 @@ ARG INSTALL_AEROSPIKE=false
 RUN set -xe; \
     if [ ${INSTALL_AEROSPIKE} = true ]; then \
     # Fix dependencies for PHPUnit within aerospike extension
-    apt-get -y install sudo wget && \
+    apt-get -y install wget && \
     # Install the php aerospike extension
     if [ $(php -r "echo PHP_MAJOR_VERSION;") = "5" ]; then \
       curl -L -o /tmp/aerospike-client-php.tar.gz https://github.com/aerospike/aerospike-client-php5/archive/master.tar.gz; \
@@ -465,7 +513,7 @@ RUN if [ ${INSTALL_IONCUBE} = true ]; then \
 # Opcache:
 ###########################################################################
 
-ARG INSTALL_OPCACHE=false
+ARG INSTALL_OPCACHE=true
 
 RUN if [ ${INSTALL_OPCACHE} = true ]; then \
     docker-php-ext-install opcache \
@@ -493,7 +541,7 @@ ARG INSTALL_INTL=false
 
 RUN if [ ${INSTALL_INTL} = true ]; then \
     # Install intl and requirements
-    apt-get install -y zlib1g-dev libicu-dev g++ && \
+    apt-get install -f -y zlib1g-dev libicu-dev g++ && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl \
 ;fi
@@ -507,7 +555,7 @@ ARG INSTALL_GHOSTSCRIPT=false
 RUN if [ ${INSTALL_GHOSTSCRIPT} = true ]; then \
     # Install the ghostscript extension
     # for PDF editing
-    apt-get install -y \
+    apt-get install -f -y \
     poppler-utils \
     ghostscript \
 ;fi
@@ -519,7 +567,7 @@ RUN if [ ${INSTALL_GHOSTSCRIPT} = true ]; then \
 ARG INSTALL_LDAP=false
 
 RUN if [ ${INSTALL_LDAP} = true ]; then \
-    apt-get install -y libldap2-dev && \
+    apt-get install -f -y libldap2-dev && \
     docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap \
 ;fi
@@ -543,12 +591,12 @@ RUN set -eux; \
       # Ref from https://github.com/Microsoft/msphpsql/wiki/Dockerfile-for-adding-pdo_sqlsrv-and-sqlsrv-to-official-php-image
       ###########################################################################
       # Add Microsoft repo for Microsoft ODBC Driver 13 for Linux
-      apt-get install -y apt-transport-https gnupg \
+      apt-get install -f -y apt-transport-https gnupg \
       && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
       && curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list \
       && apt-get update -yqq \
       # Install Dependencies
-      && ACCEPT_EULA=Y apt-get install -y unixodbc unixodbc-dev libgss3 odbcinst msodbcsql17 locales \
+      && ACCEPT_EULA=Y apt-get install -f -y unixodbc unixodbc-dev libgss3 odbcinst msodbcsql17 locales \
       && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
       # link local aliases
       && ln -sfn /etc/locale.alias /usr/share/locale/locale.alias \
@@ -571,10 +619,10 @@ RUN set -eux; \
 
 USER root
 
-ARG INSTALL_IMAGE_OPTIMIZERS=false
+ARG INSTALL_IMAGE_OPTIMIZERS=true
 
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
-    apt-get install -y jpegoptim optipng pngquant gifsicle \
+    apt-get install -f -y jpegoptim optipng pngquant gifsicle \
 ;fi
 
 ###########################################################################
@@ -583,10 +631,10 @@ RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
 
 USER root
 
-ARG INSTALL_IMAGEMAGICK=false
+ARG INSTALL_IMAGEMAGICK=true
 
 RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
-    apt-get install -y libmagickwand-dev imagemagick && \
+    apt-get install -f -y libmagickwand-dev imagemagick libmagickcore-dev && \
     pecl install imagick && \
     docker-php-ext-enable imagick \
 ;fi
@@ -598,7 +646,7 @@ RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
 ARG INSTALL_IMAP=false
 
 RUN if [ ${INSTALL_IMAP} = true ]; then \
-    apt-get install -y libc-client-dev libkrb5-dev && \
+    apt-get install -f -y libc-client-dev libkrb5-dev && \
     docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
     docker-php-ext-install imap \
 ;fi
@@ -628,7 +676,7 @@ ENV LARADOCK_PHALCON_VERSION ${LARADOCK_PHALCON_VERSION}
 COPY ./phalcon.ini /usr/local/etc/php/conf.d/phalcon.ini.disable
 
 RUN if [ $INSTALL_PHALCON = true ]; then \
-    apt-get update && apt-get install -y unzip libpcre3-dev gcc make re2c \
+    apt-get update && apt-get install -f -y unzip libpcre3-dev gcc make re2c \
     && curl -L -o /tmp/cphalcon.zip https://github.com/phalcon/cphalcon/archive/v${LARADOCK_PHALCON_VERSION}.zip \
     && unzip -d /tmp/ /tmp/cphalcon.zip \
     && cd /tmp/cphalcon-${LARADOCK_PHALCON_VERSION}/build \
@@ -658,7 +706,7 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
 
 USER root
 
-ARG INSTALL_YAML=false
+ARG INSTALL_YAML=true
 
 RUN if [ ${INSTALL_YAML} = true ]; then \
     apt-get install libyaml-dev -y ; \
@@ -677,7 +725,7 @@ RUN if [ ${INSTALL_YAML} = true ]; then \
 ARG INSTALL_RDKAFKA=false
 
 RUN if [ ${INSTALL_RDKAFKA} = true ]; then \
-    apt-get install -y librdkafka-dev && \
+    apt-get install -f -y librdkafka-dev && \
     pecl install rdkafka && \
     docker-php-ext-enable rdkafka \
 ;fi
@@ -690,7 +738,7 @@ ARG INSTALL_ADDITIONAL_LOCALES=false
 ARG ADDITIONAL_LOCALES
 
 RUN if [ ${INSTALL_ADDITIONAL_LOCALES} = true ]; then \
-    apt-get install -y locales \
+    apt-get install -f -y locales \
     && echo '' >> /usr/share/locale/locale.alias \
     && temp="${ADDITIONAL_LOCALES%\"}" \
     && temp="${temp#\"}" \
@@ -704,7 +752,7 @@ RUN if [ ${INSTALL_ADDITIONAL_LOCALES} = true ]; then \
 
 USER root
 
-ARG INSTALL_MYSQL_CLIENT=false
+ARG INSTALL_MYSQL_CLIENT=true
 
 RUN if [ ${INSTALL_MYSQL_CLIENT} = true ]; then \
     apt-get update -yqq && \
@@ -721,7 +769,7 @@ RUN if [ ${INSTALL_MYSQL_CLIENT} = true ]; then \
 
 USER root
 
-ARG INSTALL_PING=false
+ARG INSTALL_PING=true
 
 RUN if [ ${INSTALL_PING} = true ]; then \
     apt-get update -yqq && \
@@ -747,7 +795,7 @@ RUN if [ ${INSTALL_SSHPASS} = true ]; then \
 
 USER root
 
-ARG INSTALL_FFMPEG=false
+ARG INSTALL_FFMPEG=true
 
 RUN if [ ${INSTALL_FFMPEG} = true ]; then \
     apt-get update -yqq && \
