@@ -62,6 +62,12 @@ RUN set -xe; \
       # nasm
       nasm && \
       php -m | grep -q 'zip'
+	  
+# Install Git Secrets from https://github.com/awslabs/git-secrets.git.
+# This can you from committing passwords and other sensitive information 
+# to a git repository.
+RUN git clone https://github.com/awslabs/git-secrets.git && cd git-secrets; \
+    make install;
 
 #
 #--------------------------------------------------------------------------
@@ -1160,10 +1166,7 @@ RUN set -xe; php -v | head -n 1 | grep -q "PHP ${LARADOCK_PHP_VERSION}."
 #--------------------------------------------------------------------------
 #
 
-USER laradock
-
-# Set git credentials so no password prompts every x repo pushes.
-RUN git config credential.helper cache --timeout=86400
+USER root
 
 # Clean up
 RUN apt-get clean && \

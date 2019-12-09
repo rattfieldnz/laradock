@@ -18,12 +18,12 @@ fi
 docker image prune --force=true && \
 docker stop $(docker ps -a -q) && \ 
 docker rm $(docker ps -a -q); \ 
-rm -rf ~/.laradock/data && \
 docker-compose up -d apache2 mysql phpmyadmin redis workspace && \ 
 docker-compose build $CACHE && \ 
-winpty docker-compose exec --user=laradock workspace bash -c "
-    git clone https://github.com/awslabs/git-secrets.git && 
-	cd git-secrets && make && make install; cd ../ && rm -rf git-secrets;
-	cd /var/www && git secrets --install -f && git secrets --scan-history; 
+winpty docker-compose exec --user=root workspace bash -c "
+	if [ -d git-secrets ]; then rm -Rf git-secrets; fi;
+    git clone https://github.com/awslabs/git-secrets.git && cd git-secrets;
+	make install; cd ../ && rm -rf git-secrets;
+	git secrets --install -f && git secrets --scan-history; 
 	php artisan migrate && php artisan db:seed;
 	";
