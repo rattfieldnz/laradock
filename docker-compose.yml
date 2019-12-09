@@ -386,7 +386,9 @@ services:
       ports:
         - "${MYSQL_PORT}:3306"
       networks:
-        - backend
+        backend: 
+          aliases: 
+            - mysql.usatrip.laradock
 
 ### Percona ################################################
 #    percona:
