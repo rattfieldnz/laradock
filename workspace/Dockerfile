@@ -1160,7 +1160,10 @@ RUN set -xe; php -v | head -n 1 | grep -q "PHP ${LARADOCK_PHP_VERSION}."
 #--------------------------------------------------------------------------
 #
 
-USER root
+USER laradock
+
+# Set git credentials so no password prompts every x repo pushes.
+RUN git config credential.helper cache --timeout=86400
 
 # Clean up
 RUN apt-get clean && \
