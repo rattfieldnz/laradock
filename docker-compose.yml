@@ -57,6 +57,7 @@ services:
       build:
         context: ./workspace
         args:
+          - CHANGE_SOURCE=${CHANGE_SOURCE}
           - LARADOCK_PHP_VERSION=${PHP_VERSION}
           - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
           - INSTALL_SUBVERSION=${WORKSPACE_INSTALL_SUBVERSION}

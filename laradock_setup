@@ -2,24 +2,20 @@
 
 clear;
 
-CACHE=;
-
-if [ ! -z $1 ] 
-then 
-    CACHE=$1
-else
-    CACHE=
-fi
-
-# Line 24: Install Git Secrets from https://github.com/awslabs/git-secrets.git.
-# This can prevent committing passwords and other sensitive information 
-# to a git repository.
-
 docker image prune --force=true && \
 docker stop $(docker ps -a -q) && \ 
 docker rm $(docker ps -a -q); \ 
-docker-compose up -d apache2 mysql phpmyadmin redis workspace && \ 
-docker-compose build $CACHE && \ 
+docker-compose up -d apache2 mysql phpmyadmin redis workspace;
+
+if [ $1 = "--no-cache" ] 
+then
+    echo "Building Docker image with cache..."; sleep 2;
+    docker-compose build --no-cache;
+else
+    echo "Building Docker image without cache..."; sleep 2;
+    docker-compose build;
+fi;
+
 winpty docker-compose exec --user=root workspace bash -c "
 	if [ -d git-secrets ]; then rm -Rf git-secrets; fi;
     git clone https://github.com/awslabs/git-secrets.git && cd git-secrets;
