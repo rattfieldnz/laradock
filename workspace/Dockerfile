@@ -1178,18 +1178,20 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     rm /var/log/lastlog /var/log/faillog
 
+USER laradock	
+
 # Set default work directory
 WORKDIR /var/www
 
 # Install PHP Dependencies with Composer
 # composer.json copied from my project
 ADD ./composer.json /var/www/
-RUN composer install
+# RUN composer install
 
 # Add App/Project Files
 ADD ./ /var/www/
-RUN composer dump-autoload --optimize
+# RUN composer dump-autoload --optimize
 
 # Install Node Dependencies
 # RUN ls -ll /var/www && sleep 30;
-RUN yarn install --force;
+# RUN yarn install --force;

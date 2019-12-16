@@ -20,6 +20,12 @@ winpty docker-compose exec --user=root workspace bash -c "
 	if [ -d git-secrets ]; then rm -Rf git-secrets; fi;
     git clone https://github.com/awslabs/git-secrets.git && cd git-secrets;
 	make install; cd ../ && rm -rf git-secrets;
-	git secrets --install -f && git secrets --scan-history; 
+	chown -R laradock:www-data /var/www/*;
+	git secrets --install -f && git secrets --scan-history;
+    "
+	
+winpty docker-compose exec --user=laradock workspace bash -c "
+    composer install && composer dump-autoload --optimize;	
 	php artisan migrate && php artisan db:seed;
+	yarn install --force;
 	";
