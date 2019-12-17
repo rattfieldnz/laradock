@@ -147,6 +147,7 @@ services:
       networks:
         - frontend
         - backend
+      command: "/sbin/my_init"  
       links:
         - docker-in-docker
 
